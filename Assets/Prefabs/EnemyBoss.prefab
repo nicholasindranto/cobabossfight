@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4585358408483451535}
   - component: {fileID: 960796121796625317}
   - component: {fileID: 6482308513057738052}
+  - component: {fileID: 6651342993957496076}
   m_Layer: 0
   m_Name: EnemyBoss
   m_TagString: Untagged
@@ -108,6 +109,40 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6651342993957496076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3569310620283054009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b2ec5fc703e5b4ca47703736e4e32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLeftCornerPos: {fileID: 0}
+  bottomRightPos: {fileID: 0}
+  isTransitionLandFly: 0
+  transitionCooldown: 1
+  isOnCooldown: 0
+  isOnMoveCooldown: 0
+  moveCooldown: 1
+  walkStateMinMovementCount: 2
+  walkStateMaxMovementCount: 4
+  walkStateToAttack1StatePercentage: 30
+  walkStateSmoothMovement: 0.5
+  walkStateYPos: 4
+  flyStateMinMovementCount: 1
+  flyStateMaxMovementCount: 3
+  flyStateSmoothMovement: 0.5
+  flyStateYPos: 9
+  flyStateToAttack1StatePercentage: 30
+  flyStateToAttack2StatePercentage: 20
+  flyStateToAttack3StatePercentage: 20
+  moveToDo: 0
+  currentMoveCount: 0
+  targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &6037242016909506967
 GameObject:
   m_ObjectHideFlags: 0
