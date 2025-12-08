@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: -1564582882109846842}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -269,3 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33dcff44a5bd3d141bb13a5c153ac8df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 3
+  playerID: 1
+  player1HPText: {fileID: 0}
+  player2HPText: {fileID: 0}

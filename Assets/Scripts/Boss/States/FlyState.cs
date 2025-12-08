@@ -39,7 +39,7 @@ public class FlyState : BossState
         // bikin gerak kesana
         bossController.Move();
 
-        // kalau lagi transisi land atau fly, maka skip
+        // kalau lagi transisi land atau fly atau kalau mau ke attack2, maka skip
         if (bossController.isTransitionLandFly) return;
 
         // kalau distance nya udah nyampe maka tambahin current move countnya

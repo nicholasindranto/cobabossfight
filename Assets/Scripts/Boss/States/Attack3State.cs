@@ -27,4 +27,10 @@ public class Attack3State : BossState
         // kalau lagi transisi antar state, maka skip
         if (bossController.isOnCooldown) return;
     }
+
+    public override void Exit()
+    {
+        // pastikan di akhir chain attack tidak ada state lagi
+        bossController.DequeueStateAfterTransition();
+    }
 }

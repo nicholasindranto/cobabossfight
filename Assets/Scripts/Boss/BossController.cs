@@ -12,6 +12,7 @@ public class BossController : MonoBehaviour
     public bool isOnCooldown = false;
     public bool isOnMoveCooldown = false;
     public float moveCooldown;
+    public BossState queuedStateAfterTransition = null;
 
     [Header("Walk State Settings")]
     public int walkStateMinMovementCount;
@@ -31,6 +32,9 @@ public class BossController : MonoBehaviour
 
     [Header("Attack 1 Settings")]
     public GameObject beamCollider;
+    public float warmUpDuration;
+    public float beamDuration;
+    public float spawnZOffset;
 
     // reference ke bossstatemachinenya
     public BossStateMachine stateMachine { get; private set; }
@@ -107,6 +111,14 @@ public class BossController : MonoBehaviour
 
         // setelah nyampe false lagi transisinya
         isTransitionLandFly = false;
+
+        // kalau ada queue yg nunggu, maka masuk sekarang
+        if (queuedStateAfterTransition != null)
+        {
+            // ambil statenya
+            BossState state = DequeueStateAfterTransition();
+            stateMachine.ChangeState(state);
+        }
     }
 
     public IEnumerator CooldownBetweenTransitionState()
@@ -129,4 +141,18 @@ public class BossController : MonoBehaviour
 
     // cek apakah di ground apa nggak
     public bool IsGrounded() => (transform.position.y <= (walkStateYPos + 0.1f)) && (transform.position.y >= (walkStateYPos - 0.1f));
+
+    // buat masukin state ke queue
+    public void EnqueueStateAfterTransition(BossState state)
+    {
+        queuedStateAfterTransition = state;
+    }
+
+    // buat dequeue nya
+    public BossState DequeueStateAfterTransition()
+    {
+        BossState s = queuedStateAfterTransition;
+        queuedStateAfterTransition = null;
+        return s;
+    }
 }
