@@ -36,6 +36,16 @@ public class BossController : MonoBehaviour
     public float beamDuration;
     public float spawnZOffset;
 
+    [Header("Attack 2 Settings")]
+    // ketinggian offscreennya
+    public float offScreenY;
+    // kecepataan vertical nya
+    public float verticalSpeed;
+    // reference ke shadownya
+    public GameObject shadowPrefab;
+    // reference ke collider splash damagenya
+    public GameObject splashDamageCollider;
+
     // reference ke bossstatemachinenya
     public BossStateMachine stateMachine { get; private set; }
 
