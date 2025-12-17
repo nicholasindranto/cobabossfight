@@ -26,7 +26,6 @@ public class OneTimeDamager : MonoBehaviour
             {
                 other.gameObject.GetComponent<PlayerHealth>().TakeDamage(1);
                 isPlayer1TakeDamage = true;
-                Debug.LogError("PLAYER 1 TERKENA DAMAGE ANJAY!");
             }
         }
 
@@ -36,7 +35,6 @@ public class OneTimeDamager : MonoBehaviour
             {
                 other.gameObject.GetComponent<PlayerHealth>().TakeDamage(2);
                 isPlayer2TakeDamage = true;
-                Debug.LogError("PLAYER 2 TERKENA DAMAGE ANJAY!");
             }
         }
     }
@@ -44,15 +42,7 @@ public class OneTimeDamager : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         // false kan semuanya
-        if (other.CompareTag("Player1"))
-        {
-            isPlayer1TakeDamage = false;
-            Debug.LogWarning("player 1 dah gak masuk dalam collider anjay");
-        }
-        if (other.CompareTag("Player2"))
-        {
-            isPlayer2TakeDamage = false;
-            Debug.LogWarning("player 2 dah gak masuk dalam collider anjay");
-        }
+        if (other.CompareTag("Player1")) isPlayer1TakeDamage = false;
+        if (other.CompareTag("Player2")) isPlayer2TakeDamage = false;
     }
 }

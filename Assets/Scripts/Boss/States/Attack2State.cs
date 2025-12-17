@@ -22,7 +22,10 @@ public class Attack2State : BossState
         // bossController.StartCoroutine(bossController.DebugAttackState(2, "attack 2", bossController.attack3State));
 
         // set random target playernya dulu
-        int randPlayer = Random.Range(1, 3);
+        int randPlayer = 0;
+        if (GameManager.instance.player1 != null || GameManager.instance.player2 != null) randPlayer = Random.Range(1, 3);
+        else if (GameManager.instance.player1 != null || GameManager.instance.player2 == null) randPlayer = 1;
+        else if (GameManager.instance.player1 == null || GameManager.instance.player2 != null) randPlayer = 2;
         if (randPlayer == 1) targetPlayer = GameManager.instance.player1;
         else targetPlayer = GameManager.instance.player2;
 
@@ -69,7 +72,7 @@ public class Attack2State : BossState
         // ambil shadowindicatornya dulu
         ShadowIndicator siScript = bossController.shadowPrefab.GetComponent<ShadowIndicator>();
         // tunggu sampai sudah selesai ngetrack
-        yield return new WaitForSeconds(siScript.followTime + siScript.timeBeforeSlam);
+        yield return new WaitForSeconds(siScript.followTime + siScript.timeBeforeSlam + 0.05f);
 
         // pindahin bossnya di atas target positionnya
         Vector3 above = new Vector3(siScript.lastPosTrack.x, bossController.offScreenY, siScript.lastPosTrack.z);

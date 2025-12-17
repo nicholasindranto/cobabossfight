@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BossController : MonoBehaviour
@@ -45,6 +46,17 @@ public class BossController : MonoBehaviour
     public GameObject shadowPrefab;
     // reference ke collider splash damagenya
     public GameObject splashDamageCollider;
+
+    [Header("Attack 3 Settings")]
+    // posisi spawn missilenya di sekitar boss
+    public Transform leftSocket;
+    public Transform rightSocket;
+    public Transform aboveSocket;
+    // waktu tunggu sebelum missile launch
+    public float waitUntilLaunchTime;
+    // reference ke ui target lock nya
+    public GameObject targetUIPlayer1;
+    public GameObject targetUIPlayer2;
 
     // reference ke bossstatemachinenya
     public BossStateMachine stateMachine { get; private set; }
