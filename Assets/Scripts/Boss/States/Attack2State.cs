@@ -22,18 +22,17 @@ public class Attack2State : BossState
         // bossController.StartCoroutine(bossController.DebugAttackState(2, "attack 2", bossController.attack3State));
 
         // set random target playernya dulu
-        int randPlayer = 0;
-        if (GameManager.instance.player1 != null || GameManager.instance.player2 != null) randPlayer = Random.Range(1, 3);
-        else if (GameManager.instance.player1 != null || GameManager.instance.player2 == null) randPlayer = 1;
-        else if (GameManager.instance.player1 == null || GameManager.instance.player2 != null) randPlayer = 2;
-        if (randPlayer == 1) targetPlayer = GameManager.instance.player1;
-        else targetPlayer = GameManager.instance.player2;
+        if (GameManager.instance.players[0] != null && GameManager.instance.players[1] != null) targetPlayer = GameManager.instance.players[Random.Range(0, 2)];
+        else if (GameManager.instance.players[0] == null && GameManager.instance.players[1] != null) targetPlayer = GameManager.instance.players[1];
+        else if (GameManager.instance.players[0] != null && GameManager.instance.players[1] == null) targetPlayer = GameManager.instance.players[0];
+        else targetPlayer = null;
 
         // bikin boss nya keatas (terbang keatas)
         bossController.StartCoroutine(GoingUp());
 
         // shadownya ngikutin
-        bossController.StartCoroutine(bossController.shadowPrefab.GetComponent<ShadowIndicator>().FollowPlayer(targetPlayer));
+        // kalau nggak ada target playernya maka skip
+        if (targetPlayer != null) bossController.StartCoroutine(bossController.shadowPrefab.GetComponent<ShadowIndicator>().FollowPlayer(targetPlayer));
 
         // bossnya teleport ke posisi terakhir setelah nunggu tracking shadow dan slam
         bossController.StartCoroutine(WaitAndSlam());

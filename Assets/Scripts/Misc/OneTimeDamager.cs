@@ -38,11 +38,4 @@ public class OneTimeDamager : MonoBehaviour
             }
         }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        // false kan semuanya
-        if (other.CompareTag("Player1")) isPlayer1TakeDamage = false;
-        if (other.CompareTag("Player2")) isPlayer2TakeDamage = false;
-    }
 }

@@ -14,9 +14,6 @@ public class ShadowIndicator : MonoBehaviour
     // method biar shadownya ngefollow player
     public IEnumerator FollowPlayer(Transform player)
     {
-        // kalau nggak ada target playernya maka skip
-        if (player == null) yield return null;
-
         // aktifkan gameobjectnya
         gameObject.SetActive(true);
 

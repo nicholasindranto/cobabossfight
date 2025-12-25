@@ -22,6 +22,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ShootPlayer1",
+                    "type": "Button",
+                    "id": "1c1ceb88-8b16-4a2f-a3aa-da52b2a27357",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ShootPlayer2",
+                    "type": "Button",
+                    "id": "87fec937-8840-474f-ac74-f23ce0ff3607",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -134,6 +152,28 @@
                     "action": "MovePlayer2",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "8ca96fd1-d812-4a5c-ac64-4e6244044a63",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShootPlayer1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b3d5e94d-9e69-4c2b-89fd-4df84a2a032d",
+                    "path": "<Keyboard>/numpad7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShootPlayer2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

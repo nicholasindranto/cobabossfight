@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -24,6 +25,12 @@ public class MissileLaunchOnTarget : MonoBehaviour
     // reference lagi idle apa nggaknya, by default nggak idle
     public bool isIdling = false;
 
+    // coba event idling nya
+    public static event Action IsMissileOnIdleState;
+
+    // reference ke coroutine count down idlenya
+    public Coroutine idleCoroutine = null;
+
     private void OnEnable()
     {
         // diawal pastikan false dulu
@@ -34,6 +41,8 @@ public class MissileLaunchOnTarget : MonoBehaviour
     private void OnDisable()
     {
         Attack3State.MissileLaunch -= StartLaunchMissile;
+        // pastikan pas dimatikan, idlecoroutinenya null
+        idleCoroutine = null;
     }
 
     private void StartLaunchMissile(Vector3 finalM1, Vector3 finalM2, Vector3 finalM3)
@@ -44,13 +53,15 @@ public class MissileLaunchOnTarget : MonoBehaviour
         switch (socket)
         {
             case MissileSocket.Left:
-                if (GameManager.instance.player1) StartCoroutine(LaunchMissileCoroutine(finalM1));
+                if (GameManager.instance.players[0]) StartCoroutine(LaunchMissileCoroutine(finalM1));
                 break;
             case MissileSocket.Right:
-                if (GameManager.instance.player2) StartCoroutine(LaunchMissileCoroutine(finalM2));
+                if (GameManager.instance.players[1]) StartCoroutine(LaunchMissileCoroutine(finalM2));
                 break;
             case MissileSocket.Above:
-                StartCoroutine(LaunchPickUpMissileCoroutine(finalM3));
+                // kalau lagi idle dan lagi picked up maka jangan launch lagi
+                if (!isIdling && !GetComponentInChildren<MissilePickUp>().isPickedUp)
+                    StartCoroutine(LaunchPickUpMissileCoroutine(finalM3));
                 break;
             default:
                 Debug.LogError("TIDAK ADA POSISI MISSILE NYA!");
@@ -97,9 +108,6 @@ public class MissileLaunchOnTarget : MonoBehaviour
 
     private IEnumerator LaunchPickUpMissileCoroutine(Vector3 target)
     {
-        // kalau lagi idle maka jangan launch lagi
-        if (isIdling) yield return null;
-
         // nggak jadi child dari socket boss nya lagi
         gameObject.transform.SetParent(null);
 
@@ -120,22 +128,31 @@ public class MissileLaunchOnTarget : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
         transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
 
-        StartCoroutine(StartIdlingCoroutine());
+        // kalau lagi idle maka jangan launch lagi
+        if (!isIdling) idleCoroutine = StartCoroutine(StartIdlingCoroutine());
     }
 
     private IEnumerator StartIdlingCoroutine()
     {
-        // kalau lagi idle maka jangan launch lagi
-        if (isIdling) yield return null;
-
         // lagi idle
         isIdling = true;
-        Debug.LogWarning($"APAKAH MASUK dari {gameObject.name}");
+        IsMissileOnIdleState?.Invoke(); // buat unsubscribe event di lock on nya
 
         yield return new WaitForSeconds(idleDuration);
 
         // matiin isidlingnya dan balikin ke pool
         isIdling = false;
         MissilePool.instance.ReturnToPool(gameObject, "pickup");
+    }
+
+    public void CancelIdleCountdown()
+    {
+        // stop idlecoroutinenya, kalau ada
+        if (idleCoroutine != null)
+        {
+            StopCoroutine(idleCoroutine);
+            idleCoroutine = null;
+            isIdling = false;
+        }
     }
 }

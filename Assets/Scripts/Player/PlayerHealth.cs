@@ -16,25 +16,16 @@ public class PlayerHealth : MonoBehaviour
     public TextMeshProUGUI player1HPText;
     public TextMeshProUGUI player2HPText;
 
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.P))
-        {
-            TakeDamage(1);
-        }
-        else if (Input.GetKey(KeyCode.L))
-        {
-            TakeDamage(2);
-        }
-    }
+    // event player died
+    public static event Action OnPlayerDied;
 
     public void TakeDamage(int id)
     {
         // kalau idnya beda, skip
         if (id != playerID) return;
 
-        hp--;
-        hp = Mathf.Clamp(hp, 0, hp);
+        float temp = hp - 1;
+        hp = Mathf.Clamp(hp, 0, temp);
         Debug.Log($"player {id} take damage");
 
         UpdateUI(id);
@@ -42,6 +33,8 @@ public class PlayerHealth : MonoBehaviour
         if (hp <= 0)
         {
             Debug.Log($"player {id} dead");
+            // invoke event player diednya
+            OnPlayerDied?.Invoke();
             Destroy(gameObject);
         }
     }

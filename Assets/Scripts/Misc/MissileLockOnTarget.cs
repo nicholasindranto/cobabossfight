@@ -19,12 +19,16 @@ public class MissileLockOnTarget : MonoBehaviour
     {
         // subscribe ke event missile lock on nya
         Attack3State.MissileLockOn += StartLockOn;
+        MissileLaunchOnTarget.IsMissileOnIdleState += UnsubscribeStartLockOn;
     }
 
     private void OnDisable()
     {
         Attack3State.MissileLockOn -= StartLockOn;
+        MissileLaunchOnTarget.IsMissileOnIdleState -= UnsubscribeStartLockOn;
     }
+
+    private void UnsubscribeStartLockOn() => Attack3State.MissileLockOn -= StartLockOn;
 
     private void StartLockOn(Transform p1, Transform p2, Vector3 randPos)
     {
@@ -32,13 +36,15 @@ public class MissileLockOnTarget : MonoBehaviour
         switch (socket)
         {
             case MissileSocket.Left:
-                if (p1) StartCoroutine(LockOnPlayerCoroutine(p1));
+                if (GameManager.instance.players[0]) StartCoroutine(LockOnPlayerCoroutine(p1));
                 break;
             case MissileSocket.Right:
-                if (p2) StartCoroutine(LockOnPlayerCoroutine(p2));
+                if (GameManager.instance.players[1]) StartCoroutine(LockOnPlayerCoroutine(p2));
                 break;
             case MissileSocket.Above:
-                StartCoroutine(LockOnRandomCoroutine(randPos));
+                // kalau nggak lagi idling dan nggak di pickedup maka jalankan
+                if (!GetComponent<MissileLaunchOnTarget>().isIdling && !GetComponentInChildren<MissilePickUp>().isPickedUp)
+                    StartCoroutine(LockOnRandomCoroutine(randPos));
                 break;
             default:
                 Debug.LogError("TIDAK ADA POSISI MISSILE NYA!");
@@ -79,9 +85,6 @@ public class MissileLockOnTarget : MonoBehaviour
 
     private IEnumerator LockOnRandomCoroutine(Vector3 randPos)
     {
-        // kalau lagi idling maka jangan jalankan
-        if (GetComponent<MissileLaunchOnTarget>().isIdling) yield return null;
-
         // missile 3 random targetnya
         float startTimeMissile = 0f;
 
